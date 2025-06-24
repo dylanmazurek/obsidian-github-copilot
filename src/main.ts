@@ -9,25 +9,10 @@ import CopilotPluginSettingTab, {
 } from "./settings/CopilotPluginSettingTab";
 import ExtensionManager from "./extensions/ExtensionManager";
 import Vault from "./helpers/Vault";
-import File from "./helpers/File";
 import Logger from "./helpers/Logger";
 import Cacher from "./copilot/Cacher";
 import ChatView from "./copilot-chat/views/ChatView";
 
-// @ts-expect-error - import to be bundled
-import agentInitializer from "official-copilot/agent-initializer.txt";
-// @ts-expect-error - import to be bundled
-import agent from "official-copilot/agent.txt";
-// @ts-expect-error - import to be bundled
-import cl100k from "official-copilot/resources/cl100k_base.tiktoken";
-// @ts-expect-error - import to be bundled
-import o200k from "official-copilot/resources/o200k_base.tiktoken";
-// @ts-expect-error - import to be bundled
-import cl100kNoIndex from "official-copilot/resources/cl100k_base.tiktoken.noindex";
-// @ts-expect-error - import to be bundled
-import o200kNoIndex from "official-copilot/resources/o200k_base.tiktoken.noindex";
-// @ts-expect-error - import to be bundled
-import crypt32 from "official-copilot/resources/crypt32.node";
 import { CHAT_VIEW_TYPE } from "./copilot-chat/types/constants";
 
 export default class CopilotPlugin extends Plugin {
@@ -50,47 +35,6 @@ export default class CopilotPlugin extends Plugin {
 		Logger.getInstance().setDebug(this.settings.debug);
 
 		this.tabSize = Vault.getTabSize(this.app);
-
-		// Recreate or update the copilot folder and artifacts from the bundle
-		if (
-			!File.doesFolderExist(Vault.getCopilotPath(this.app, this.version))
-		) {
-			await File.createFolder(
-				Vault.getCopilotResourcesPath(this.app, this.version),
-			);
-			await File.createFile(
-				Vault.getAgentInitializerPath(this.app, this.version),
-				agentInitializer,
-			);
-			await File.createFile(
-				Vault.getAgentPath(this.app, this.version),
-				agent,
-			);
-			await File.createFile(
-				`${Vault.getCopilotResourcesPath(this.app, this.version)}/cl100k_base.tiktoken`,
-				cl100k,
-			);
-			await File.createFile(
-				`${Vault.getCopilotResourcesPath(this.app, this.version)}/o200k_base.tiktoken`,
-				o200k,
-			);
-			await File.createFile(
-				`${Vault.getCopilotResourcesPath(this.app, this.version)}/cl100k_base.tiktoken.noindex`,
-				cl100kNoIndex,
-			);
-			await File.createFile(
-				`${Vault.getCopilotResourcesPath(this.app, this.version)}/o200k_base.tiktoken.noindex`,
-				o200kNoIndex,
-			);
-			await File.createFile(
-				`${Vault.getCopilotPath(this.app, this.version)}/crypt32.node`,
-				crypt32,
-			);
-			await File.removeOldCopilotFolders(
-				this.version,
-				Vault.getPluginPath(this.app),
-			);
-		}
 
 		if (
 			this.settings.nodePath === DEFAULT_SETTINGS.nodePath ||

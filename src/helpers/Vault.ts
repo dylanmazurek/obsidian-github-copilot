@@ -21,20 +21,8 @@ class Vault {
 		return `${this.getConfigPath(app)}/plugins/github-copilot`;
 	}
 
-	public static getCopilotPath(app: App, version: string): string {
-		return `${this.getPluginPath(app)}/copilot-${version}`;
-	}
-
-	public static getCopilotResourcesPath(app: App, version: string): string {
-		return `${this.getCopilotPath(app, version)}/resources`;
-	}
-
-	public static getAgentInitializerPath(app: App, version: string): string {
-		return `${this.getCopilotPath(app, version)}/agent-initializer.cjs`;
-	}
-
-	public static getAgentPath(app: App, version: string): string {
-		return `${this.getCopilotPath(app, version)}/main.js`;
+	public static getCopilotPath(app: App): string {
+		return `${this.getPluginPath(app)}/node_modules/@github/copilot-language-server`;
 	}
 
 	public static isFileExcluded(filePath: string, exclude: string[]): boolean {

@@ -22,9 +22,13 @@ class CopilotAgent implements SettingsObserver {
 
 	constructor(plugin: CopilotPlugin) {
 		this.plugin = plugin;
+
 		this.agentPath = path.join(
-			Vault.getAgentInitializerPath(this.plugin.app, this.plugin.version),
+			Vault.getCopilotPath(this.plugin.app),
+			"dist",
+			"language-server.js"
 		);
+
 		this.plugin.settingsTab.registerObserver(this);
 	}
 
@@ -50,31 +54,23 @@ class CopilotAgent implements SettingsObserver {
 
 	public startAgent(): void {
 		try {
+			var options = { cwd: Vault.getBasePath(this.plugin.app), env: {} };
+
+			if (this.plugin.settings.proxy) {
+				if (this.plugin.settings.proxy.startsWith("http://")) {
+					options.env = { HTTP_PROXY: this.plugin.settings.proxy };
+				} else if (this.plugin.settings.proxy.startsWith("https://")) {
+					options.env = { HTTPS_PROXY: this.plugin.settings.proxy };
+				}
+			}
+
 			this.agent = spawn(
 				File.wrapFilePath(this.plugin.settings.nodePath),
-				[File.wrapFilePath(this.agentPath), "--stdio"],
+				[this.agentPath, "--stdio"],
 				{
 					shell: true,
 					stdio: "pipe",
-					...(this.plugin.settings.proxy && {
-						env: {
-							...(this.plugin.settings.proxy.startsWith("http://")
-								? { HTTP_PROXY: this.plugin.settings.proxy }
-								: {}),
-							...(this.plugin.settings.proxy.startsWith(
-								"https://",
-							)
-								? { HTTPS_PROXY: this.plugin.settings.proxy }
-								: {}),
-							...(this.plugin.settings.extraCACerts &&
-							this.plugin.settings.extraCACerts.trim() !== ""
-								? {
-										NODE_EXTRA_CA_CERTS:
-											this.plugin.settings.extraCACerts.trim(),
-									}
-								: {}),
-						},
-					}),
+					...options,
 				},
 			);
 		} catch (error) {

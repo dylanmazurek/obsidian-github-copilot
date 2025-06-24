@@ -47,15 +47,20 @@ class Client {
 		await this.initialize({
 			processId: this.plugin.copilotAgent.getAgent().pid as number,
 			capabilities: {
-				// @ts-expect-error - we're not using all the capabilities
-				copilot: {
-					openURL: true,
-				},
+				workspace: {
+					workspaceFolders: true
+				}
 			},
 			clientInfo: {
 				name: "ObsidianCopilot",
 				version: "0.0.1",
 			},
+			workspaceFolders: [
+				{
+					name: "Obsidian Vault",
+					uri: "file://" + this.basePath,
+				},
+			],
 			rootUri: "file://" + this.basePath,
 			initializationOptions: {
 				editorInfo: {
@@ -90,19 +95,8 @@ class Client {
 	}
 
 	public async setEditorInfo(): Promise<void> {
-		await this.client.customRequest("setEditorInfo", {
-			editorInfo: {
-				name: "obsidian",
-				version: "0.0.1",
-			},
-			editorPluginInfo: {
-				name: "obsidian-copilot",
-				version: "0.0.1",
-			},
-		});
-
-		// Open the active file
 		const activeFile = this.plugin.app.workspace.getActiveFile();
+
 		if (activeFile) {
 			const content = await this.plugin.app.vault.read(activeFile);
 			const didOpenParams = {

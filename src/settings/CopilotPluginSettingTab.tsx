@@ -484,7 +484,7 @@ class CopilotPluginSettingTab extends PluginSettingTab {
 				Json.textToJsonObject(
 					File.readFileSync(
 						Vault.getPluginPath(this.plugin.app) +
-							"/device_data.json",
+						"/device_data.json",
 					),
 				) || {},
 			);
