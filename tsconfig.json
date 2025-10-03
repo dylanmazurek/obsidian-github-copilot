@@ -10,8 +10,11 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "isolatedModules": true,
-	  "strictNullChecks": true,
+    "strictNullChecks": true,
     "allowSyntheticDefaultImports": true,
+    "types": [
+      "node"
+    ],
     "lib": [
       "DOM",
       "ES5",
@@ -21,8 +24,9 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "**/*.ts"
-, "src/settings/CopilotPluginSettingTab.tsx"  ],
+    "**/*.ts",
+    "src/settings/CopilotPluginSettingTab.tsx"
+  ],
   "exclude": [
     "node_modules",
     "copilot/**/*",

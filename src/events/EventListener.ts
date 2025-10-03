@@ -3,7 +3,7 @@ import Cacher from "../copilot/Cacher";
 import CopilotPlugin from "../main";
 import Vault from "../helpers/Vault";
 import Logger from "../helpers/Logger";
-import LSP from "../helpers/LSP";
+import { LSP } from "../helpers/LSP";
 
 class EventListener {
 	private plugin: CopilotPlugin;

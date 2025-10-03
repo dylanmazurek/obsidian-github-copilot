@@ -33,6 +33,7 @@ class Client {
 			this.plugin.copilotAgent.getAgent().stdin,
 			this.plugin.copilotAgent.getAgent().stdout,
 		);
+
 		this.setupListeners();
 		this.client = new LspClient(this.endpoint);
 	}
@@ -73,6 +74,7 @@ class Client {
 				},
 			},
 		});
+
 		await this.initialized();
 		await this.checkStatus();
 		await this.setEditorInfo();
@@ -132,7 +134,7 @@ class Client {
 		params: DidOpenTextDocumentParams,
 	): Promise<void> {
 		try {
-			await this.client.didOpen(params);
+			this.client.didOpen(params);
 		} catch (error) {
 			Logger.getInstance().error("Error in openDocument: " + error);
 		}

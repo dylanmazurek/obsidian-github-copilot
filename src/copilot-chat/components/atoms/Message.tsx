@@ -2,11 +2,80 @@ import React, { useMemo } from "react";
 import { concat, cx } from "../../../utils/style";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { usePlugin } from "../../hooks/usePlugin";
 
 const BASE_CLASSNAME = "copilot-chat-message";
+
+// Custom syntax highlighting styles
+const customDarkStyle = {
+	'code[class*="language-"]': {
+		color: '#d4d4d4',
+		background: 'var(--code-background)',
+		fontFamily: 'var(--font-monospace)',
+		fontSize: '0.9em',
+		textAlign: 'left' as const,
+		whiteSpace: 'pre' as const,
+		wordSpacing: 'normal',
+		wordBreak: 'normal' as const,
+		wordWrap: 'normal' as const,
+		lineHeight: '1.5',
+		tabSize: 4,
+		hyphens: 'none' as const,
+	},
+	'pre[class*="language-"]': {
+		color: '#d4d4d4',
+		background: 'var(--code-background)',
+		fontFamily: 'var(--font-monospace)',
+		fontSize: '0.9em',
+		textAlign: 'left' as const,
+		whiteSpace: 'pre' as const,
+		wordSpacing: 'normal',
+		wordBreak: 'normal' as const,
+		wordWrap: 'normal' as const,
+		lineHeight: '1.5',
+		tabSize: 4,
+		hyphens: 'none' as const,
+		padding: '1em',
+		margin: '0.5em 0',
+		overflow: 'auto',
+		borderRadius: '4px',
+	},
+};
+
+const customLightStyle = {
+	'code[class*="language-"]': {
+		color: '#383a42',
+		background: 'var(--code-background)',
+		fontFamily: 'var(--font-monospace)',
+		fontSize: '0.9em',
+		textAlign: 'left' as const,
+		whiteSpace: 'pre' as const,
+		wordSpacing: 'normal',
+		wordBreak: 'normal' as const,
+		wordWrap: 'normal' as const,
+		lineHeight: '1.5',
+		tabSize: 4,
+		hyphens: 'none' as const,
+	},
+	'pre[class*="language-"]': {
+		color: '#383a42',
+		background: 'var(--code-background)',
+		fontFamily: 'var(--font-monospace)',
+		fontSize: '0.9em',
+		textAlign: 'left' as const,
+		whiteSpace: 'pre' as const,
+		wordSpacing: 'normal',
+		wordBreak: 'normal' as const,
+		wordWrap: 'normal' as const,
+		lineHeight: '1.5',
+		tabSize: 4,
+		hyphens: 'none' as const,
+		padding: '1em',
+		margin: '0.5em 0',
+		overflow: 'auto',
+		borderRadius: '4px',
+	},
+};
 
 export interface MessageProps {
 	className?: string;
@@ -129,11 +198,8 @@ const ChatMessage: React.FC<MessageProps> = (props) => {
 									language={match[1]}
 									style={
 										isDarkTheme
-											? vscDarkPlus
-											: (oneLight as Record<
-													string,
-													React.CSSProperties
-												>)
+											? customDarkStyle
+											: customLightStyle
 									}
 									PreTag="div"
 									className={`theme-${isDarkTheme ? "dark" : "light"}`}

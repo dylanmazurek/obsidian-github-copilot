@@ -12,7 +12,7 @@ import {
 import { Hotkeys } from "../settings/CopilotPluginSettingTab";
 import Cacher from "../copilot/Cacher";
 import CopilotAgent from "../copilot/CopilotAgent";
-import LSP from "../helpers/LSP";
+import { LSP } from "../helpers/LSP";
 import CopilotPlugin from "../main";
 
 export const inlineSuggestionKeyWatcher = (

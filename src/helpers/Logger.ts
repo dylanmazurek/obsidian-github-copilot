@@ -2,7 +2,7 @@ class Logger {
 	private static instance: Logger;
 	private isEnabled = false;
 
-	private constructor() {}
+	private constructor() { }
 
 	public static getInstance(): Logger {
 		if (!Logger.instance) {

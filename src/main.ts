@@ -105,7 +105,16 @@ export default class CopilotPlugin extends Plugin {
 			leaf = leaves[0];
 		} else {
 			leaf = workspace.getRightLeaf(false);
-			await leaf?.setViewState({ type: CHAT_VIEW_TYPE, active: true });
+			if (!leaf) {
+				try {
+					leaf = workspace.getLeaf('split', 'vertical');
+				} catch (error) {
+					leaf = workspace.getLeaf(true);
+				}
+			}
+			if (leaf) {
+				await leaf.setViewState({ type: CHAT_VIEW_TYPE, active: true });
+			}
 		}
 		if (!leaf) {
 			Logger.getInstance().error("Failed to create chat view.");
